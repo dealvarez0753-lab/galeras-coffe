@@ -6,31 +6,75 @@ use App\Http\Controllers\PaginaController;
 use App\Http\Controllers\PqrsController;
 use App\Http\Controllers\ReservasController;
 
-// Rutas Públicas
-Route::get('/', [PaginaController::class, 'inicio'])->name('inicio');
-Route::get('/menu', [PaginaController::class, 'menu'])->name('menu');
-Route::get('/nosotros', [PaginaController::class, 'nosotros'])->name('nosotros');
-Route::get('/contacto', [PaginaController::class, 'contacto'])->name('contacto');
-Route::post('/pqrs', [PqrsController::class, 'store'])->name('pqrs.store');
-Route::get('/reservas', [PaginaController::class, 'reservas'])->name('reservas');
-Route::post('/reservas', [ReservasController::class, 'store'])->name('reservas.store');
-Route::get('/mensaje', [PqrsController::class, 'index'])->name('mensaje');
-Route::get('/exitosa', [ReservasController::class, 'index'])->name('exitosa');
+/*rutas publicas*/
 
-// Rutas Protegidas
+Route::get('/', [PaginaController::class, 'inicio'])
+    ->name('inicio');
+
+Route::get('/menu', [PaginaController::class, 'menu'])
+    ->name('menu');
+
+Route::get('/nosotros', [PaginaController::class, 'nosotros'])
+    ->name('nosotros');
+
+Route::get('/contacto', [PaginaController::class, 'contacto'])
+    ->name('contacto');
+
+/*pqrs*/
+
+Route::post('/pqrs', [PqrsController::class, 'store'])
+    ->name('pqrs.store');
+
+/*reservas*/
+
+Route::get('/reservas', [PaginaController::class, 'reservas'])
+    ->name('reservas');
+
+Route::post('/reservas', [ReservasController::class, 'store'])
+    ->name('reservas.store');
+
+/*rutas privadas*/
+
 Route::middleware(['auth', 'verified'])->group(function () {
+
+    /*dashboard*/
 
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
 
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
-    Route::get('/mensajes', [PqrsController::class, 'index'])->name('mensajes');
-    Route::get('/editar_mensaje/{id}', [PqrsController::class, 'edit'])->name('mensajes.edit');
-    Route::put('/mensajes/{id}', [PqrsController::class, 'update'])->name('mensajes.update');
-    Route::delete('/mensajes/{id}', [PqrsController::class, 'destroy'])->name('mensajes.destroy');
+    /*perfil*/
+
+    Route::get('/profile', [ProfileController::class, 'edit'])
+        ->name('profile.edit');
+
+    Route::patch('/profile', [ProfileController::class, 'update'])
+        ->name('profile.update');
+
+    Route::delete('/profile', [ProfileController::class, 'destroy'])
+        ->name('profile.destroy');
+
+    /*mensajes*/
+
+    Route::get('/mensaje', [PqrsController::class, 'index'])
+        ->name('mensaje');
+
+    Route::get('/editar_mensaje/{id}', [PqrsController::class, 'edit'])
+        ->name('mensajes.edit');
+
+    Route::put('/mensaje/{id}', [PqrsController::class, 'update'])
+        ->name('mensajes.update');
+
+    Route::delete('/mensaje/{id}', [PqrsController::class, 'destroy'])
+        ->name('mensajes.destroy');
+
+    /*
+    vista exitosa privada*/
+
+    Route::get('/exitosa', [ReservasController::class, 'index'])
+        ->name('exitosa');
 });
+
+/*autenticacion*/
+
 require __DIR__.'/auth.php';
