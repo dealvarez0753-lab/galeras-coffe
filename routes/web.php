@@ -6,8 +6,6 @@ use App\Http\Controllers\PaginaController;
 use App\Http\Controllers\PqrsController;
 use App\Http\Controllers\ReservasController;
 
-/*rutas publicas*/
-
 Route::get('/', [PaginaController::class, 'inicio'])
     ->name('inicio');
 
